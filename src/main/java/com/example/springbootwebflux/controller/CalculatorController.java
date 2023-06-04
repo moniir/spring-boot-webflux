@@ -1,17 +1,16 @@
 package com.example.springbootwebflux.controller;
 
+import com.example.springbootwebflux.model.MultiplyRequestDto;
 import com.example.springbootwebflux.model.Response;
 import com.example.springbootwebflux.service.MathCalculationReactiveService;
 import com.example.springbootwebflux.service.MathCalculationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/calculator")
@@ -44,6 +43,13 @@ public class CalculatorController {
     @GetMapping("/table-reactive/{input}")
     public Flux<Response> multiplicationTableReactive(@PathVariable int input){
         return this.mathCalculationReactiveService.multiplicationTable(input);
+    }
+
+    @PostMapping("multiply")
+    public Mono<Response> multiply(@RequestBody Mono<MultiplyRequestDto> requestDtoMono,
+                                   @RequestHeader Map<String, String> headers){
+        System.out.println(headers);
+        return this.mathCalculationReactiveService.multiply(requestDtoMono);
     }
 
 }
