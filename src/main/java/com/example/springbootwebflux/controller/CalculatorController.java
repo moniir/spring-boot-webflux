@@ -1,5 +1,6 @@
 package com.example.springbootwebflux.controller;
 
+import com.example.springbootwebflux.exception.InputValidationException;
 import com.example.springbootwebflux.model.MultiplyRequestDto;
 import com.example.springbootwebflux.model.Response;
 import com.example.springbootwebflux.service.MathCalculationReactiveService;
@@ -42,6 +43,9 @@ public class CalculatorController {
 
     @GetMapping("/table-reactive/{input}")
     public Flux<Response> multiplicationTableReactive(@PathVariable int input){
+        if(input<10 || input>20){
+            throw new InputValidationException(input);
+        }
         return this.mathCalculationReactiveService.multiplicationTable(input);
     }
 
